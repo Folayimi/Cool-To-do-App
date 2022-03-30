@@ -19,8 +19,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
     },[darkMode])
     const handleSubmit = (e) =>{
         e.preventDefault();
-        setData([...data, {id:new Date().getTime().toString(), text}])
-        console.log(data)        
+        setData([...data, {id:new Date().getTime().toString(), text}])            
         setText("");        
     }
     return(
