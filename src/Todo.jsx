@@ -4,6 +4,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
     const [data, setData] =useState([])
     const [create, setCreate] = useState("hsl(235, 24%, 19%)")   
     const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)"); 
+    const [text, setText] = useState("");
     useEffect(()=>{
         if(darkMode){
             setCreate("hsl(235, 24%, 19%)");
@@ -15,6 +16,9 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
         }
 
     },[darkMode])
+    const handleSubmit = () =>{
+
+    }
     return(
         <>
             <div className="todoCont">
@@ -44,9 +48,15 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         </div>
                         <input type="text" placeholder='Create a new todo...'
                         style={{color:txtCol}}
+                        name="insertBox"
+                        value={text}
+                        onChange={(e)=>{
+                            setText(e.target.value)                                                                                                         
+                        }}
                         />
                         <div className="addItem"
-                        style={{color:txtCol}}>Add</div>
+                        style={{color:txtCol}}
+                        onClick={handleSubmit}>Add</div>
                     </div>
                     <div className="listCont">
                         {
