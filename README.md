@@ -1,4 +1,4 @@
-# This Project is a solution to Bank Landing Page Challenge!
+# This Project is a solution to a Todo App Challenge!
 
 # Getting Started with Create React App
 
