@@ -85,12 +85,36 @@ body{
 .todo > .listCont{
     width:100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column-reverse;  
+    justify-content: flex-start;  
     align-items: center;
-    gap:1em;
+    gap:0.08em;
     background: hsl(233, 14%, 35%);
     margin-top:1.5em;
-    border-radius: 0.4em;
+    border-radius: 0.2em;
+    border-bottom: 1px solid hsl(233, 14%, 35%);
+}
+.todoL{
+    width:100%;
+    padding:0.8em 1em 0.8em 1em;   
+    border-radius: 0.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.todoL > .select{
+    width:1.3em;
+    height: 1.3em;
+    border-radius: 1.3em;
+    border:1px solid hsl(233, 14%, 35%);
+}
+.todoL h1{
+    width:80%;
+    font-size: 1rem;
+}
+.todoL > .remove{
+    display: flex;
+    justify-content: flex-end;
 }
 .footer{
     width:100%;

@@ -1,10 +1,11 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, useContext} from 'react';
 
+const InstantContext = React.createContext()
 const Todo = ({mobile,darkMode,setDarkMode}) =>{
-    const [data, setData] =useState([])
+    const [data, setData] = useState([])
     const [create, setCreate] = useState("hsl(235, 24%, 19%)")   
     const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)"); 
-    const [text, setText] = useState("");
+    const [text, setText] = useState("");    
     useEffect(()=>{
         if(darkMode){
             setCreate("hsl(235, 24%, 19%)");
@@ -16,8 +17,11 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
         }
 
     },[darkMode])
-    const handleSubmit = () =>{
-
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        setData([...data, {id:new Date().getTime().toString(), text}])
+        console.log(data)        
+        setText("");        
     }
     return(
         <>
@@ -51,7 +55,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         name="insertBox"
                         value={text}
                         onChange={(e)=>{
-                            setText(e.target.value)                                                                                                         
+                            setText(e.currentTarget.value)                                                                                                         
                         }}
                         />
                         <div className="addItem"
@@ -59,9 +63,14 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         onClick={handleSubmit}>Add</div>
                     </div>
                     <div className="listCont">
+                        <InstantContext.Provider value={{darkMode,create,txtCol,
+                        text,setText}}>
                         {
-                            <List darkMode={darkMode}/>
+                            data.map((items)=>{
+                                return <List {...items} key={items.id}/>
+                            })                            
                         }
+                        </InstantContext.Provider>                        
                     </div>
                 </div>
             </div>
@@ -71,10 +80,21 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
 
 export default Todo;
 
-const List = ({darkMode}) =>{
+const List = ({text}) =>{
+    const instantData = useContext(InstantContext)
     return(
         <>
+        <div className="todoL" 
+        style={{background:instantData.create}}
+        >
+            <div className="select">
 
+            </div>
+            <h1 style={{color:instantData.txtCol}}>{text}</h1>
+            <div className="remove">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path fill="#494C6B" fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>    
+            </div>        
+        </div>
         </>
     )
 }
