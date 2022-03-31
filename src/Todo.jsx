@@ -63,13 +63,51 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                     </div>
                     <div className="listCont">
                         <InstantContext.Provider value={{darkMode,create,txtCol,
-                        text,setText}}>
+                        text,setText,data,setData}}>
                         {
                             data.map((items)=>{
                                 return <List {...items} key={items.id}/>
                             })                            
                         }
-                        </InstantContext.Provider>                        
+                        </InstantContext.Provider>                                                
+                    </div>
+                    {
+                        mobile ?
+                        <>
+                        <div className="baseM"
+                        style={{background:create}}>
+                            <div className="unMarked">
+                                <p>0 items left</p>
+                            </div>
+                            <div className="clCompl">
+                                <p>Clear Completed</p>
+                            </div>
+                        </div>
+                        <div className="status"
+                        style={{background:create}}>
+                            <p>All</p>
+                            <p>Active</p>
+                            <p>Completed</p>
+                        </div>
+                        </>
+                        :
+                        <div className="baseD"
+                        style={{background:create}}>
+                            <div className="unMarked">
+                                <p>0 items left</p>
+                            </div>
+                            <div className="status">
+                                <p>All</p>
+                                <p>Active</p>
+                                <p>Completed</p>
+                            </div>
+                            <div className="clCompl">
+                                <p>Clear Completed</p>
+                            </div>
+                         </div>
+                    }                    
+                    <div className="statement">
+                        <p>Click the Add button to reorder list</p>
                     </div>
                 </div>
             </div>
@@ -79,8 +117,13 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
 
 export default Todo;
 
-const List = ({text}) =>{
-    const instantData = useContext(InstantContext)
+const List = ({text,id}) =>{
+    const instantData = useContext(InstantContext)    
+    const removeList = () =>{          
+        instantData.setData((Data)=>{            
+            return Data.filter((list)=>list.id!==id)
+        })                              
+    }
     return(
         <>
         <div className="todoL" 
@@ -90,7 +133,8 @@ const List = ({text}) =>{
 
             </div>
             <h1 style={{color:instantData.txtCol}}>{text}</h1>
-            <div className="remove">
+            <div className="remove"
+            onClick={removeList}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path fill="#494C6B" fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>    
             </div>        
         </div>
