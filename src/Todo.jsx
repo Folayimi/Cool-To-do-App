@@ -3,8 +3,15 @@ import Modal from "./Modal"
 
 const InstantContext = React.createContext()
 const Todo = ({mobile,darkMode,setDarkMode}) =>{
-    const [data, setData] = useState([])
-    const [create, setCreate] = useState("hsl(235, 24%, 19%)")   
+    const [data, setData] = useState([]);
+    const [actData, setActData] = useState(data);
+    const [compData, setCompData] = useState(data);
+    const [showAll,setShowAll] = useState(true)
+    const [showActive,setShowActive] = useState(false);
+    const [showCompleted,setShowCompleted] = useState(false);
+    const [active,setActive] = useState(true);
+    const [completed,setCompleted] = useState(false);
+    const [create, setCreate] = useState("hsl(235, 24%, 19%)");   
     const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)");     
     const [text, setText] = useState("");  
     const [error, setError] = useState(false);
@@ -23,8 +30,11 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
     const handleSubmit = (e) =>{
         e.preventDefault();
         if(text){
-            setData([...data, {id:new Date().getTime().toString(), text}])            
+            setData([...data, {id:new Date().getTime().toString(), text,
+            active:active,completed:completed}]);
             setText("");
+            setActData(data);
+            setCompData(data);
         }  
         else{
             setError(true);
@@ -77,11 +87,24 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                     </div>                    
                     <div className="listCont">
                         <InstantContext.Provider value={{darkMode,create,txtCol,
-                        text,setText,data,setData}}>
-                        {
+                        text,setText,data,setData,setActive,active,setCompleted,
+                        completed}}>
+                        {   showAll && 
                             data.map((items)=>{
                                 return <List {...items} key={items.id}/>
                             })                            
+                        }
+                        {
+                            showActive &&
+                            actData.map((items)=>{
+                                return <List {...items} key={items.id}/>
+                            })
+                        }
+                        {
+                            showCompleted &&
+                            compData.map((items)=>{
+                                return <List {...items} key={items.id}/>
+                            })
                         }
                         </InstantContext.Provider>                                                
                     </div>
@@ -111,9 +134,31 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                                 <p>0 items left</p>
                             </div>
                             <div className="status">
-                                <p>All</p>
-                                <p>Active</p>
-                                <p>Completed</p>
+                                <p onClick={()=>{
+                                    setShowAll(true);
+                                    setShowActive(false);
+                                    setShowCompleted(false);                                    
+                                }}>All</p>
+
+                                <p onClick={()=>{
+                                    setActData((list)=>{
+                                        return actData.filter((list)=>
+                                        list.active!==false)
+                                    })
+                                    setShowActive(true);
+                                    setShowAll(false);                                    
+                                    setShowCompleted(false);                                    
+                                }}>Active</p>
+
+                                <p onClick={()=>{
+                                    setCompData((list)=>{
+                                        return compData.filter((list)=>
+                                        list.completed!==true)
+                                    }) 
+                                    setShowCompleted(true);
+                                    setShowActive(false);
+                                    setShowAll(false);                                                                                                           
+                                }}>Completed</p>
                             </div>
                             <div className="clCompl">
                                 <p>Clear Completed</p>
@@ -131,7 +176,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
 
 export default Todo;
 
-const List = ({text,id}) =>{
+const List = ({text,id,active,completed}) =>{
     const instantData = useContext(InstantContext)    
     const removeList = () =>{          
         instantData.setData((Data)=>{            
@@ -146,14 +191,18 @@ const List = ({text,id}) =>{
         >
             {
                 selected ?                
-                    <div className="select" onClick={()=>{
+                    <div className="select" onClick={()=>{  
+                        instantData.setActive(false)                                               
+                        instantData.setCompleted(true)
                         setSelected(false)
                         }}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>
                     </div>                    
                 :
                     <div className="select" onClick={()=>{
-                        setSelected(true)
+                        setSelected(true)                       
+                        instantData.setActive(true)
+                        instantData.setCompleted(false)
                         }}>
                         <div className="inSelect"
                         style={{background:instantData.create}}/>
