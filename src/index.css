@@ -126,9 +126,9 @@ body{
     box-shadow: 0 0 20 40 black;
 }
 .todoL > .select{
-    width:1.6em;
-    height: 1.6em;
-    border-radius: 1.6em;    
+    width:1.4em;
+    height: 1.4em;
+    border-radius: 1.4em;    
     background-color: hsl(233, 14%, 35%);
     display:flex;
     justify-content: center;
@@ -139,9 +139,9 @@ body{
     background: linear-gradient(hsl(192, 100%, 67%),hsl(280, 87%, 65%));
 }
 .select> .inSelect{
-    width: 1.3em;
-    height: 1.3em;
-    border-radius: 1.3em;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 1.2em;
 }
 .todoL h1{
     width:80%;
