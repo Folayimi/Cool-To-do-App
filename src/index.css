@@ -55,6 +55,27 @@ body{
 .todo > .todoHead > .mode:hover{
     cursor:pointer;
 }
+.messCont{        
+    position: fixed;
+    top:1%;
+    width:100%;    
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    transition:.7s;
+}
+.Message{    
+    flex: 0 1 20em;
+    color:red;
+    background: rgb(0,0,0,0.3);
+    border-radius: 0.5em;
+    padding:0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;    
+    font-weight: bolder;              
+}
 .todo > .createTodo{
     width:100%;
     padding:0.8em 1em 0.8em 1em;   
@@ -93,6 +114,7 @@ body{
     margin-top:1.5em;
     border-radius: 0.2em;
     border-bottom: 1px solid hsl(233, 14%, 35%);
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.5);
 }
 .todoL{
     width:100%;
@@ -101,12 +123,25 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 0 20 40 black;
 }
 .todoL > .select{
-    width:1.3em;
+    width:1.6em;
+    height: 1.6em;
+    border-radius: 1.6em;    
+    background-color: hsl(233, 14%, 35%);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.todoL > .select:hover{
+    cursor:pointer;    
+    background: linear-gradient(hsl(192, 100%, 67%),hsl(280, 87%, 65%));
+}
+.select> .inSelect{
+    width: 1.3em;
     height: 1.3em;
     border-radius: 1.3em;
-    border:1px solid hsl(233, 14%, 35%);
 }
 .todoL h1{
     width:80%;
@@ -126,7 +161,9 @@ body{
     align-items: center;
     padding:0.8em 1em 0.8em 1em;
     font-size: 0.8rem;
-    color:hsl(233, 14%, 35%);    
+    color:hsl(233, 14%, 35%);
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.5);    
+    border-radius: 0.4em;
 }
 .baseD > .status{
     margin-top: 0em;
@@ -147,10 +184,11 @@ body{
     align-items: center;
     padding:0.8em 1em 0.8em 1em;
     font-size: 0.8rem;
-    color:hsl(233, 14%, 35%);
-    background: hsl(235, 24%, 19%);
+    color:hsl(233, 14%, 35%);    
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.5);    
+    border-radius: 0.2em;
 }
-.status{
+.Mstatus{
     margin-top: 1.5em;
     display: flex;
     justify-content: space-between;
@@ -159,8 +197,9 @@ body{
     font-size: 0.8rem;
     color:hsl(233, 14%, 35%);
     border-radius: 0.4em;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.5);
 }
-.status p:hover{
+.Mstatus p:hover{
     cursor:pointer;
     font-weight: 400;
     color:hsl(220, 98%, 61%);

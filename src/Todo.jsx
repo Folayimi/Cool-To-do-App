@@ -1,11 +1,14 @@
 import React,{useState, useEffect, useContext} from 'react';
+import Modal from "./Modal"
 
 const InstantContext = React.createContext()
 const Todo = ({mobile,darkMode,setDarkMode}) =>{
     const [data, setData] = useState([])
     const [create, setCreate] = useState("hsl(235, 24%, 19%)")   
-    const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)"); 
-    const [text, setText] = useState("");    
+    const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)");     
+    const [text, setText] = useState("");  
+    const [error, setError] = useState(false);
+    const [errMessage, setErrMessage] = useState("");  
     useEffect(()=>{
         if(darkMode){
             setCreate("hsl(235, 24%, 19%)");
@@ -16,16 +19,27 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
             setTxtCol("hsl(235, 21%, 11%)")
         }
 
-    },[darkMode])
+    },[darkMode,error])
     const handleSubmit = (e) =>{
         e.preventDefault();
-        setData([...data, {id:new Date().getTime().toString(), text}])            
-        setText("");        
+        if(text){
+            setData([...data, {id:new Date().getTime().toString(), text}])            
+            setText("");
+        }  
+        else{
+            setError(true);
+            setErrMessage("Kindly Insert a Text!")            
+        }              
     }
     return(
         <>
+            {
+                error && <Modal 
+                setError={setError} 
+                errMessage={errMessage}/>
+            }
             <div className="todoCont">
-                <div className="todo">
+                <div className="todo">                    
                     <div className="todoHead">
                         <h1>TODO</h1>
                         {
@@ -60,7 +74,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         <div className="addItem"
                         style={{color:txtCol}}
                         onClick={handleSubmit}>Add</div>
-                    </div>
+                    </div>                    
                     <div className="listCont">
                         <InstantContext.Provider value={{darkMode,create,txtCol,
                         text,setText,data,setData}}>
@@ -83,7 +97,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                                 <p>Clear Completed</p>
                             </div>
                         </div>
-                        <div className="status"
+                        <div className="Mstatus"
                         style={{background:create}}>
                             <p>All</p>
                             <p>Active</p>
@@ -124,14 +138,27 @@ const List = ({text,id}) =>{
             return Data.filter((list)=>list.id!==id)
         })                              
     }
+    const [selected, setSelected] = useState(false);
     return(
         <>
         <div className="todoL" 
         style={{background:instantData.create}}
         >
-            <div className="select">
-
-            </div>
+            {
+                selected ?                
+                    <div className="select" onClick={()=>{
+                        setSelected(false)
+                        }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>
+                    </div>                    
+                :
+                    <div className="select" onClick={()=>{
+                        setSelected(true)
+                        }}>
+                        <div className="inSelect"
+                        style={{background:instantData.create}}/>
+                    </div>
+            }           
             <h1 style={{color:instantData.txtCol}}>{text}</h1>
             <div className="remove"
             onClick={removeList}>
