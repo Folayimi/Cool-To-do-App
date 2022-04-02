@@ -18,13 +18,14 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
         if(darkMode){
             setCreate("hsl(235, 24%, 19%)");
             setTxtCol("hsl(0, 0%, 98%)")
+            setActData(data);            
         }
         else{
             setCreate("hsl(0, 0%, 98%)");
             setTxtCol("hsl(235, 21%, 11%)")
-        }
-
-    },[darkMode,error])
+            setActData(data);            
+        }        
+    },[darkMode])
     const handleSubmit = (e) =>{
         e.preventDefault();
         if(text){
@@ -35,7 +36,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
         else{
             setError(true);
             setErrMessage("Kindly Insert a Text!")            
-        }              
+        }                      
     }
     return(
         <>
@@ -125,17 +126,17 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                             <p onClick={()=>{
                                 setActData((actData)=>{
                                     return actData.filter((list)=>
-                                    list.active!==false)
-                                })
+                                    list.active===true)
+                                })                                
                                 setShowActive(true);
                                 setShowAll(false);                                    
-                                setShowCompleted(false);                                    
+                                setShowCompleted(false);                                                          
                             }}>Active</p>
                             <p onClick={()=>{
                                 setCompData((compData)=>{
                                     return compData.filter((list)=>
-                                    list.completed!==false)
-                                }) 
+                                    list.completed===true)
+                                })                                 
                                 setShowCompleted(true);
                                 setShowActive(false);
                                 setShowAll(false);                                                                                                           
@@ -156,19 +157,19 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                                 }}>All</p>
 
                                 <p onClick={()=>{
-                                    setActData((list)=>{
+                                    setActData((actData)=>{
                                         return actData.filter((list)=>
-                                        list.active!==false)
-                                    })
+                                        list.active===true)
+                                    })                                    
                                     setShowActive(true);
                                     setShowAll(false);                                    
                                     setShowCompleted(false);                                    
                                 }}>Active</p>
 
                                 <p onClick={()=>{
-                                    setCompData((list)=>{
+                                    setCompData((compData)=>{
                                         return compData.filter((list)=>
-                                        list.completed!==false)
+                                        list.completed===true)
                                     }) 
                                     setShowCompleted(true);
                                     setShowActive(false);
