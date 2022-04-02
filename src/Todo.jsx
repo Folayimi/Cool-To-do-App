@@ -8,9 +8,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
     const [compData, setCompData] = useState(data);
     const [showAll,setShowAll] = useState(true)
     const [showActive,setShowActive] = useState(false);
-    const [showCompleted,setShowCompleted] = useState(false);
-    const [active,setActive] = useState(true);
-    const [completed,setCompleted] = useState(false);
+    const [showCompleted,setShowCompleted] = useState(false);    
     const [create, setCreate] = useState("hsl(235, 24%, 19%)");   
     const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)");     
     const [text, setText] = useState("");  
@@ -31,10 +29,9 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
         e.preventDefault();
         if(text){
             setData([...data, {id:new Date().getTime().toString(), text,
-            active:active,completed:completed}]);
+            active:true,completed:false}]);
             setText("");
-            setActData(data);
-            setCompData(data);
+            console.log(data);                                    
         }  
         else{
             setError(true);
@@ -87,8 +84,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                     </div>                    
                     <div className="listCont">
                         <InstantContext.Provider value={{darkMode,create,txtCol,
-                        text,setText,data,setData,setActive,active,setCompleted,
-                        completed}}>
+                        text,setText,data,setData,setActData,setCompData}}>
                         {   showAll && 
                             data.map((items)=>{
                                 return <List {...items} key={items.id}/>
@@ -122,9 +118,29 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         </div>
                         <div className="Mstatus"
                         style={{background:create}}>
-                            <p>All</p>
-                            <p>Active</p>
-                            <p>Completed</p>
+                            <p onClick={()=>{
+                                setShowAll(true);
+                                setShowActive(false);
+                                setShowCompleted(false);                                    
+                            }}>All</p>
+                            <p onClick={()=>{
+                                setActData((actData)=>{
+                                    return actData.filter((list)=>
+                                    list.active!==false)
+                                })
+                                setShowActive(true);
+                                setShowAll(false);                                    
+                                setShowCompleted(false);                                    
+                            }}>Active</p>
+                            <p onClick={()=>{
+                                setCompData((compData)=>{
+                                    return compData.filter((list)=>
+                                    list.completed!==false)
+                                }) 
+                                setShowCompleted(true);
+                                setShowActive(false);
+                                setShowAll(false);                                                                                                           
+                            }}>Completed</p>
                         </div>
                         </>
                         :
@@ -143,7 +159,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                                 <p onClick={()=>{
                                     setActData((list)=>{
                                         return actData.filter((list)=>
-                                        list.active!==false)
+                                        list.active!==true)
                                     })
                                     setShowActive(true);
                                     setShowAll(false);                                    
@@ -176,36 +192,55 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
 
 export default Todo;
 
-const List = ({text,id,active,completed}) =>{
-    const instantData = useContext(InstantContext)    
+const List = ({text,id,active,completed}) =>{   
+    const instantData = useContext(InstantContext)            
     const removeList = () =>{          
         instantData.setData((Data)=>{            
             return Data.filter((list)=>list.id!==id)
-        })                              
-    }
-    const [selected, setSelected] = useState(false);
+        })
+        
+        instantData.setActData((Data)=>{            
+            return Data.filter((list)=>list.id!==id)
+        })
+
+        instantData.setCompData((Data)=>{            
+            return Data.filter((list)=>list.id!==id)
+        })
+    }    
     return(
         <>
         <div className="todoL" 
         style={{background:instantData.create}}
         >
             {
-                selected ?                
-                    <div className="select" onClick={()=>{  
-                        instantData.setActive(false)                                               
-                        instantData.setCompleted(true)
-                        setSelected(false)
-                        }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>
-                    </div>                    
-                :
-                    <div className="select" onClick={()=>{
-                        setSelected(true)                       
-                        instantData.setActive(true)
-                        instantData.setCompleted(false)
+                active ?                
+                    <div className="select" onClick={()=>{ 
+                        replaceItem(instantData.setData, {id: new Date().getTime().toString(),
+                            text,active:false,completed:true},id)                                               
+                        
+                        replaceItem(instantData.setActData, {id: new Date().getTime().toString(),
+                            text,active:false,completed:true},id)
+                            
+                        replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
+                            text,active:false,completed:true},id)                                                
+                        console.log(instantData.data)
                         }}>
                         <div className="inSelect"
                         style={{background:instantData.create}}/>
+                    </div>                    
+                :
+                    <div className="select" onClick={()=>{
+                        replaceItem(instantData.setData, {id: new Date().getTime().toString(),
+                            text,active:true,completed:false},id)                                               
+                        
+                        replaceItem(instantData.setActData, {id: new Date().getTime().toString(),
+                            text,active:true,completed:false},id)
+                            
+                        replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
+                            text,active:true,completed:false},id)                   
+                        console.log(instantData.data)                             
+                        }}>                       
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>                                                 
                     </div>
             }           
             <h1 style={{color:instantData.txtCol}}>{text}</h1>
@@ -216,4 +251,12 @@ const List = ({text,id,active,completed}) =>{
         </div>
         </>
     )
+}
+const replaceItem =(setItem,newItem,identifier)=>{    
+        setItem((items)=>{
+            return items.filter((item)=>item.id!==identifier);
+        });
+        setItem((items)=>{
+            return [...items, newItem]
+        })    
 }

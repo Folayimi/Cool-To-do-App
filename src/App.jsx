@@ -11,7 +11,7 @@ import {BrowserRouter as
 function App (){
     const [size,setSize] = useState(window.innerWidth)
     const [mobile,setMobile] = useState(false);
-    const [darkMode, setDarkMode] = useState(true);
+    const [darkMode, setDarkMode] = useState(false);
     window.addEventListener('resize',()=>{
         setSize(window.innerWidth);
     })
