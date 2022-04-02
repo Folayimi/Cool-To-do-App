@@ -12,6 +12,7 @@ function App (){
     const [size,setSize] = useState(window.innerWidth)
     const [mobile,setMobile] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
+    const [actMode,setActMode] = useState(false);
     window.addEventListener('resize',()=>{
         setSize(window.innerWidth);
     })
@@ -33,7 +34,8 @@ function App (){
                 <Routes>
                     <Route exact path="/" element={
                         <Todo mobile={mobile} darkMode={darkMode}
-                        setDarkMode={setDarkMode}/>
+                        setDarkMode={setDarkMode} actMode={actMode}
+                        setActMode={setActMode}/>
                     }/>                    
                 </Routes>         
                 <Footer mobile={mobile} darkMode={darkMode}/>       

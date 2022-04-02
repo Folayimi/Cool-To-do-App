@@ -2,7 +2,7 @@ import React,{useState, useEffect, useContext} from 'react';
 import Modal from "./Modal"
 
 const InstantContext = React.createContext()
-const Todo = ({mobile,darkMode,setDarkMode}) =>{
+const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
     const [data, setData] = useState([]);
     const [actData, setActData] = useState(data);
     const [compData, setCompData] = useState(data);
@@ -10,33 +10,39 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
     const [showActive,setShowActive] = useState(false);
     const [showCompleted,setShowCompleted] = useState(false);    
     const [create, setCreate] = useState("hsl(235, 24%, 19%)");   
-    const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)");     
+    const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)");   
+    const [basetxt, setBaseTxt] = useState("rgb(160,160,160)")  
     const [text, setText] = useState("");  
     const [error, setError] = useState(false);
     const [errMessage, setErrMessage] = useState("");  
     useEffect(()=>{
         if(darkMode){
             setCreate("hsl(235, 24%, 19%)");
-            setTxtCol("hsl(0, 0%, 98%)")
-            setActData(data);            
+            setTxtCol("hsl(0, 0%, 98%)")    
+            setBaseTxt("rgb(160,160,160)")                                            
+            setActData(data);
+            setActMode(false);
         }
         else{
             setCreate("hsl(0, 0%, 98%)");
-            setTxtCol("hsl(235, 21%, 11%)")
-            setActData(data);            
-        }        
-    },[darkMode])
+            setTxtCol("hsl(235, 24%, 19%)")     
+            setBaseTxt("rgb(160,160,160)")                                                               
+            setActData(data);  
+            setActMode(false);                  
+        }                
+    },[darkMode,actMode])
     const handleSubmit = (e) =>{
         e.preventDefault();
         if(text){
             setData([...data, {id:new Date().getTime().toString(), text,
             active:true,completed:false}]);
-            setText("");                         
+            setText("");                 
+            setActMode(true);                                                    
         }  
         else{
             setError(true);
             setErrMessage("Kindly Insert a Text!")            
-        }                      
+        }                              
     }
     return(
         <>
@@ -108,7 +114,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         mobile ?
                         <>
                         <div className="baseM"
-                        style={{background:create}}>
+                        style={{background:create, color:basetxt}}>
                             <div className="unMarked">
                                 <p>0 items left</p>
                             </div>
@@ -117,7 +123,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                             </div>
                         </div>
                         <div className="Mstatus"
-                        style={{background:create}}>
+                        style={{background:create, color:basetxt}}>
                             <p onClick={()=>{
                                 setShowAll(true);
                                 setShowActive(false);
@@ -145,7 +151,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                         </>
                         :
                         <div className="baseD"
-                        style={{background:create}}>
+                        style={{background:create, color:basetxt}}>
                             <div className="unMarked">
                                 <p>0 items left</p>
                             </div>
@@ -182,7 +188,8 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                          </div>
                     }                    
                     <div className="statement">
-                        <p>Click the Add button to reorder list</p>
+                        <p style={{color:basetxt}}
+                        >Click the Add button to reorder list</p>
                     </div>
                 </div>
             </div>
@@ -222,8 +229,7 @@ const List = ({text,id,active,completed}) =>{
                             text,active:false,completed:true},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:false,completed:true},id)                                                
-                        console.log(instantData.data)
+                            text,active:false,completed:true},id)                                                                        
                         }}>
                         <div className="inSelect"
                         style={{background:instantData.create}}/>
