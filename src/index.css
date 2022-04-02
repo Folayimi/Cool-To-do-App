@@ -103,14 +103,14 @@ body{
 .createTodo .addItem:hover{
     cursor:pointer;
 }
-.todo > .listCont{
+.todo > .listCont{    
     width:100%;
     display: flex;
     flex-direction: column-reverse;  
     justify-content: flex-start;  
     align-items: center;
     gap:0.08em;
-    background: hsl(233, 14%, 35%);
+    /* background: hsl(233, 14%, 35%); */    
     margin-top:1.5em;
     border-radius: 0.2em;
     border-bottom: 1px solid hsl(233, 14%, 35%);
@@ -118,7 +118,7 @@ body{
 }
 .todoL{
     width:100%;
-    padding:0.8em 1em 0.8em 1em;   
+    padding:0.5em 1em 0.5em 1em;   
     border-radius: 0.2em;
     display: flex;
     justify-content: space-between;
@@ -164,6 +164,7 @@ body{
     color:hsl(233, 14%, 35%);
     box-shadow: 0px 6px 15px rgba(0,0,0,0.5);    
     border-radius: 0.4em;
+    margin-top:0.2em;
 }
 .baseD > .status{
     margin-top: 0em;
@@ -187,6 +188,7 @@ body{
     color:hsl(233, 14%, 35%);    
     box-shadow: 0px 6px 15px rgba(0,0,0,0.5);    
     border-radius: 0.2em;
+    margin-top:0.2em;
 }
 .Mstatus{
     margin-top: 1.5em;

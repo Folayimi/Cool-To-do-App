@@ -13,6 +13,7 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
     const [txtCol, setTxtCol] = useState("hsl(0, 0%, 98%)");   
     const [basetxt, setBaseTxt] = useState("rgb(160,160,160)")  
     const [text, setText] = useState("");  
+    const [textDec,setTextDec] = useState("none")
     const [error, setError] = useState(false);
     const [errMessage, setErrMessage] = useState("");  
     useEffect(()=>{
@@ -90,7 +91,8 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                     </div>                    
                     <div className="listCont">
                         <InstantContext.Provider value={{darkMode,create,txtCol,
-                        text,setText,data,setData,setActData,setCompData}}>
+                        text,setText,data,setData,setActData,setCompData,
+                        textDec,setTextDec}}>
                         {   showAll && 
                             data.map((items)=>{
                                 return <List {...items} key={items.id}/>
@@ -229,7 +231,8 @@ const List = ({text,id,active,completed}) =>{
                             text,active:false,completed:true},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:false,completed:true},id)                                                                        
+                            text,active:false,completed:true},id)  
+                        instantData.setTextDec("line-through");                                                                      
                         }}>
                         <div className="inSelect"
                         style={{background:instantData.create}}/>
@@ -243,17 +246,20 @@ const List = ({text,id,active,completed}) =>{
                             text,active:true,completed:false},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:true,completed:false},id)                                                             
+                            text,active:true,completed:false},id)  
+                        instantData.setTextDec("none");
                         }}>                       
                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>                                                 
                     </div>
             }           
-            <h1 style={{color:instantData.txtCol}}>{text}</h1>
+            <h1 style={{color:instantData.txtCol, 
+                textDecoration:instantData.textDec}}>{text}</h1>
             <div className="remove"
             onClick={removeList}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path fill="#494C6B" fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>    
             </div>        
         </div>
+        <hr style={{width:"100%"}}/>
         </>
     )
 }
