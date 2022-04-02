@@ -30,8 +30,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
         if(text){
             setData([...data, {id:new Date().getTime().toString(), text,
             active:true,completed:false}]);
-            setText("");
-            console.log(data);                                    
+            setText("");                         
         }  
         else{
             setError(true);
@@ -237,8 +236,7 @@ const List = ({text,id,active,completed}) =>{
                             text,active:true,completed:false},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:true,completed:false},id)                   
-                        console.log(instantData.data)                             
+                            text,active:true,completed:false},id)                                                             
                         }}>                       
                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>                                                 
                     </div>
