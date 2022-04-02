@@ -159,7 +159,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                                 <p onClick={()=>{
                                     setActData((list)=>{
                                         return actData.filter((list)=>
-                                        list.active!==true)
+                                        list.active!==false)
                                     })
                                     setShowActive(true);
                                     setShowAll(false);                                    
@@ -169,7 +169,7 @@ const Todo = ({mobile,darkMode,setDarkMode}) =>{
                                 <p onClick={()=>{
                                     setCompData((list)=>{
                                         return compData.filter((list)=>
-                                        list.completed!==true)
+                                        list.completed!==false)
                                     }) 
                                     setShowCompleted(true);
                                     setShowActive(false);
