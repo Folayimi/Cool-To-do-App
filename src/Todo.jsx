@@ -5,6 +5,7 @@ const InstantContext = React.createContext()
 const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
     const [data, setData] = useState([]);
     const [actData, setActData] = useState(data);
+    const [count, setCount] = useState(0);
     const [compData, setCompData] = useState(data);
     const [showAll,setShowAll] = useState(true)
     const [showActive,setShowActive] = useState(false);
@@ -15,7 +16,7 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
     const [text, setText] = useState("");  
     const [textDec,setTextDec] = useState("none")
     const [error, setError] = useState(false);
-    const [errMessage, setErrMessage] = useState("");  
+    const [errMessage, setErrMessage] = useState("");     
     useEffect(()=>{
         if(darkMode){
             setCreate("hsl(235, 24%, 19%)");
@@ -31,15 +32,21 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
             setBaseTxt("rgb(160,160,160)")                                                               
             setActData(data);  
             setActMode(false);                              
-        }                
+        }                      
     },[darkMode,actMode])
+    
     const handleSubmit = (e) =>{
         e.preventDefault();
         if(text){
             setData([...data, {id:new Date().getTime().toString(), text,
             active:true,completed:false}]);
             setText("");                 
-            setActMode(true);                                                    
+            setActMode(true); 
+            setCount(1);
+            actData.map((item)=>{            
+                setCount(count+1)
+                return null
+            })                                                   
         }  
         else{
             setError(true);
@@ -93,7 +100,7 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                     <div className="listCont">
                         <InstantContext.Provider value={{darkMode,create,txtCol,
                         text,setText,data,setData,setActData,setCompData,
-                        textDec,setTextDec}}>
+                        textDec,setTextDec,setCount,count}}>
                         {   showAll && 
                             data.map((items)=>{
                                 return <List {...items} key={items.id}/>
@@ -119,7 +126,7 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                         <div className="baseM"
                         style={{background:create, color:basetxt}}>
                             <div className="unMarked">
-                                <p>0 items left</p>
+                                <p>{count} item(s) left</p>
                             </div>
                             <div className="clCompl">
                                 <p onClick={()=>{
@@ -161,7 +168,7 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                         <div className="baseD"
                         style={{background:create, color:basetxt}}>
                             <div className="unMarked">
-                                <p>0 items left</p>
+                                <p>{count} item(s) left</p>
                             </div>
                             <div className="status">
                                 <p onClick={()=>{
@@ -234,6 +241,11 @@ const List = ({text,id,active,completed}) =>{
         instantData.setCompData((Data)=>{            
             return Data.filter((list)=>list.id!==id)
         })
+        instantData.setCount(1);
+        instantData.actData.map((item)=>{            
+            instantData.setCount(instantData.count+1)
+            return null
+        })
     }    
     return(
         <>
@@ -250,15 +262,16 @@ const List = ({text,id,active,completed}) =>{
                             text,active:false,completed:true},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:false,completed:true},id)                          
+                            text,active:false,completed:true},id)                                                  
                         instantData.setActData((actData)=>{
                             return actData.filter((list)=>
                             list.active===true)
-                        })                          
+                        })                        
+                        instantData.setCount(instantData.count-1)                          
                         instantData.setCompData((compData)=>{
                             return compData.filter((list)=>
                             list.completed===true)
-                        })                        
+                        })                                                                                                                        
                         }}>
                         <div className="inSelect"
                         style={{background:instantData.create}}/>
@@ -272,15 +285,16 @@ const List = ({text,id,active,completed}) =>{
                             text,active:true,completed:false},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:true,completed:false},id)                          
+                            text,active:true,completed:false},id)                                                  
                         instantData.setActData((actData)=>{
                             return actData.filter((list)=>
                             list.active===true)
-                        })                          
+                        })                        
+                        instantData.setCount(instantData.count+1)                          
                         instantData.setCompData((compData)=>{
                             return compData.filter((list)=>
                             list.completed===true)
-                        })                    
+                        })                                                                    
                         }}>                       
                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>                                                 
                     </div>

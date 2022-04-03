@@ -22,6 +22,8 @@ function App (){
     useEffect(()=>{
         if(size<=625){
             setMobile(true)
+            setDarkMode(true)
+            setDarkMode(false)
         }
         else if(size>625){
             setMobile(false)
