@@ -23,13 +23,14 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
             setBaseTxt("rgb(160,160,160)")                                            
             setActData(data);
             setActMode(false);
+            setActMode(true);
         }
         else{
             setCreate("hsl(0, 0%, 98%)");
             setTxtCol("hsl(235, 24%, 19%)")     
             setBaseTxt("rgb(160,160,160)")                                                               
             setActData(data);  
-            setActMode(false);                  
+            setActMode(false);                              
         }                
     },[darkMode,actMode])
     const handleSubmit = (e) =>{
@@ -121,7 +122,20 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                                 <p>0 items left</p>
                             </div>
                             <div className="clCompl">
-                                <p>Clear Completed</p>
+                                <p onClick={()=>{
+                                    setCompData((compData)=>{
+                                        return compData.filter((list)=>
+                                        list.completed===false)
+                                    })
+                                    setActData((actData)=>{
+                                        return actData.filter((list)=>
+                                        list.completed===false)
+                                    })
+                                    setData((Data)=>{
+                                        return Data.filter((list)=>
+                                        list.completed===false)
+                                    })                                    
+                                }}>Clear Completed</p>
                             </div>
                         </div>
                         <div className="Mstatus"
@@ -131,20 +145,12 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                                 setShowActive(false);
                                 setShowCompleted(false);                                    
                             }}>All</p>
-                            <p onClick={()=>{
-                                setActData((actData)=>{
-                                    return actData.filter((list)=>
-                                    list.active===true)
-                                })                                
+                            <p onClick={()=>{                                                                
                                 setShowActive(true);
                                 setShowAll(false);                                    
                                 setShowCompleted(false);                                                          
                             }}>Active</p>
-                            <p onClick={()=>{
-                                setCompData((compData)=>{
-                                    return compData.filter((list)=>
-                                    list.completed===true)
-                                })                                 
+                            <p onClick={()=>{                                                                 
                                 setShowCompleted(true);
                                 setShowActive(false);
                                 setShowAll(false);                                                                                                           
@@ -168,7 +174,7 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                                     setActData((actData)=>{
                                         return actData.filter((list)=>
                                         list.active===true)
-                                    })                                    
+                                    })                                                                        
                                     setShowActive(true);
                                     setShowAll(false);                                    
                                     setShowCompleted(false);                                    
@@ -178,14 +184,27 @@ const Todo = ({mobile,darkMode,setDarkMode,actMode,setActMode}) =>{
                                     setCompData((compData)=>{
                                         return compData.filter((list)=>
                                         list.completed===true)
-                                    }) 
+                                    })                                     
                                     setShowCompleted(true);
                                     setShowActive(false);
                                     setShowAll(false);                                                                                                           
                                 }}>Completed</p>
                             </div>
                             <div className="clCompl">
-                                <p>Clear Completed</p>
+                                <p onClick={()=>{
+                                    setCompData((compData)=>{
+                                        return compData.filter((list)=>
+                                        list.completed===false)
+                                    })
+                                    setActData((actData)=>{
+                                        return actData.filter((list)=>
+                                        list.completed===false)
+                                    })
+                                    setData((Data)=>{
+                                        return Data.filter((list)=>
+                                        list.completed===false)
+                                    })                                    
+                                }}>Clear Completed</p>
                             </div>
                          </div>
                     }                    
@@ -231,8 +250,15 @@ const List = ({text,id,active,completed}) =>{
                             text,active:false,completed:true},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:false,completed:true},id)  
-                        instantData.setTextDec("line-through");                                                                      
+                            text,active:false,completed:true},id)                          
+                        instantData.setActData((actData)=>{
+                            return actData.filter((list)=>
+                            list.active===true)
+                        })                          
+                        instantData.setCompData((compData)=>{
+                            return compData.filter((list)=>
+                            list.completed===true)
+                        })                        
                         }}>
                         <div className="inSelect"
                         style={{background:instantData.create}}/>
@@ -246,20 +272,25 @@ const List = ({text,id,active,completed}) =>{
                             text,active:true,completed:false},id)
                             
                         replaceItem(instantData.setCompData, {id: new Date().getTime().toString(),
-                            text,active:true,completed:false},id)  
-                        instantData.setTextDec("none");
+                            text,active:true,completed:false},id)                          
+                        instantData.setActData((actData)=>{
+                            return actData.filter((list)=>
+                            list.active===true)
+                        })                          
+                        instantData.setCompData((compData)=>{
+                            return compData.filter((list)=>
+                            list.completed===true)
+                        })                    
                         }}>                       
                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>                                                 
                     </div>
             }           
-            <h1 style={{color:instantData.txtCol, 
-                textDecoration:instantData.textDec}}>{text}</h1>
+            <h1 style={{color:instantData.txtCol}}>{text}</h1>
             <div className="remove"
             onClick={removeList}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path fill="#494C6B" fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>    
             </div>        
-        </div>
-        <hr style={{width:"100%"}}/>
+        </div>        
         </>
     )
 }
